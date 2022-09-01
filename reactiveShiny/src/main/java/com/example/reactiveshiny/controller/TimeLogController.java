@@ -27,11 +27,8 @@ public class TimeLogController {
                 .build();
     }
 
-
-    //    Time tracking
     @GetMapping("/hello-time")
     Mono<ResponseEntity<String>> helloWithTime() {
-        LocalDateTime before = LocalDateTime.now();
 
         Mono<ResponseEntity<String>> response = webClient
                 .get()
@@ -40,25 +37,6 @@ public class TimeLogController {
                 .retrieve()
                 .toEntity(String.class);
 
-        LocalDateTime after = LocalDateTime.now();
-        System.out.println(ChronoUnit.MILLIS.between(before, after));
-        return response;
-    }
-
-
-    @GetMapping("/hello-time1")
-    Mono<ResponseEntity<String>> helloWithTime1() {
-        LocalDateTime before = LocalDateTime.now();
-
-        Mono<ResponseEntity<String>> response = webClient
-                .get()
-                .uri("/hello-delay")
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .toEntity(String.class)
-                .doOnNext(res -> System.out.println("Exact call: " + ChronoUnit.MILLIS.between(before, LocalDateTime.now())))
-                .map(this::mapResult)
-                .doOnNext(res -> System.out.println("With mapping: " + ChronoUnit.MILLIS.between(before, LocalDateTime.now())));
         return response;
     }
 
