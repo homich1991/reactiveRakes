@@ -15,7 +15,7 @@ public class MvcController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "Hello";
+        return "Hello from old MVC";
     }
 
     @PostMapping("/helloPost")
@@ -26,7 +26,7 @@ public class MvcController {
     @GetMapping("/hello-delay")
     public String helloDelay() throws InterruptedException {
         Thread.sleep(new Random().nextInt(1000, 3000));
-        return "Hello";
+        return "Hello from old MVC with delay";
     }
 
     @GetMapping("/error")

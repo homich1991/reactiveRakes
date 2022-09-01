@@ -3,8 +3,10 @@ package com.example.reactiveshiny.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,14 +18,6 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api")
 public class WebClientController {
-
-//    @Autowired
-//    private RestTemplate restTemplate;
-//
-//    @GetMapping("/helloRest")
-//    Mono<ResponseEntity<String>> helloForwardRest() {
-//        return Mono.just(restTemplate.getForEntity("http://localhost:8080/hello", String.class));
-//    }
 
     private final WebClient webClient;
 
