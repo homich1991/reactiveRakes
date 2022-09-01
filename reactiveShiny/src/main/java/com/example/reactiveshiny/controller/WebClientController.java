@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 public class WebClientController {
 
     @GetMapping("/hello")
-    Mono<ResponseEntity<String>> helloForward() {
+    Mono<String> helloForward() {
         throw new NotImplementedException();
     }
 

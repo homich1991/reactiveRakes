@@ -25,17 +25,17 @@ public class TimeLogController {
     }
 
     @GetMapping("/hello-time")
-    Mono<ResponseEntity<String>> helloWithTime() {
+    Mono<String> helloWithTime() {
         return webClient
                 .get()
                 .uri("/hello-delay")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .toEntity(String.class)
+                .bodyToMono(String.class)
                 .map(this::mapResult);
     }
 
-    ResponseEntity<String> mapResult(ResponseEntity<String> result) {
+    String mapResult(String result) {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
