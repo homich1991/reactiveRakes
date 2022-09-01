@@ -32,118 +32,18 @@ public class LoggingController {
     }
 
 
-
     @GetMapping("/log")
-    Mono<String> helloWithLog() {
+    Mono<ResponseEntity<String>> helloWithLog() {
         return webClient
                 .get()
                 .uri("/error")
                 .accept(MediaType.APPLICATION_JSON)
-                .exchangeToMono(response -> {
-                    if (response.statusCode() == HttpStatus.OK) {
-                        return response.bodyToMono(String.class);
-                    } else {
-                        log.error("Error happened {}", response);
-                        return response.bodyToMono(String.class)
-                                .flatMap(error ->
-                                        Mono.error(new MyAnotherCustomException("Custom:" + error, null)));
-                    }
-                });
-    }
-
-    @GetMapping("/logBlock")
-    Mono<String> helloWithLogBlock() {
-        return webClient
-                .get()
-                .uri("/error")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchangeToMono(response -> {
-                    if (response.statusCode() == HttpStatus.OK) {
-                        return response.bodyToMono(String.class);
-                    } else {
-                        String str = response.bodyToMono(String.class)
-                                .publishOn(Schedulers.boundedElastic())
-                                .block();
-                        log.error("Error happened {}", str);
-                        return response.bodyToMono(String.class)
-                                .flatMap(error ->
-                                        Mono.error(new MyAnotherCustomException("Custom:" + error, null)));
-                    }
-                });
-    }
-
-    @GetMapping("/logSubscribe")
-    Mono<String> helloWithLogSubscribe() {
-        return webClient
-                .get()
-                .uri("/errorObject")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchangeToMono(response -> {
-                    if (response.statusCode() == HttpStatus.OK) {
-                        return response.bodyToMono(String.class);
-                    } else {
-                        response.bodyToMono(String.class)
-                                .publishOn(Schedulers.boundedElastic())
-                                .subscribe(resp -> log.error("Error happened {}", resp));
-                        return response.bodyToMono(ErrorObject.class).flatMap(resp -> Mono.error(new MyAnotherCustomException("Custom:" + resp.name, null)));
-                    }
-                });
+                .retrieve()
+                .toEntity(String.class);
     }
 
 
-    @GetMapping("/logMap")
-    Mono<String> helloWithLogMap() {
-        return webClient
-                .get()
-                .uri("/error")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchangeToMono(response -> {
-                    if (response.statusCode() == HttpStatus.OK) {
-                        return response.bodyToMono(String.class);
-                    } else {
-                        return response.bodyToMono(String.class)
-                                .map(resp -> {
-                                    log.error("Error happened {}", resp);
-                                    return Mono.just(resp);
-                                })
-                                .flatMap(resp -> Mono.error(new MyAnotherCustomException("Custom:" + resp, null)));
-                    }
-                });
-    }
 
-    @GetMapping("/logDoOnNext")
-    Mono<String> helloWithLogDoOnNext() {
-        return webClient
-                .get()
-                .uri("/error")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchangeToMono(response -> {
-                    if (response.statusCode() == HttpStatus.OK) {
-                        return response.bodyToMono(String.class);
-                    } else {
-                        return response.bodyToMono(String.class)
-                                .doOnNext(resp -> log.error("Error happened {}", resp))
-                                .flatMap(resp -> Mono.error(new MyAnotherCustomException("Custom:" + resp, null)));
-                    }
-                });
-    }
-
-    record ErrorObject(String name) {
-    }
-
-    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
-    class MyCustomException extends RuntimeException {
-        public MyCustomException(String msg, Throwable e) {
-            super(msg, e);
-        }
-    }
-
-    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
-    class MyAnotherCustomException extends RuntimeException {
-        public MyAnotherCustomException(String msg, Throwable e) {
-            super(msg, e);
-        }
-    }
 
 
 }
