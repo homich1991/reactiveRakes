@@ -29,7 +29,8 @@ public class ErrorHandlingController {
                 .get()
                 .uri("/error")
                 .accept(MediaType.APPLICATION_JSON)
-                .exchangeToMono(response -> response.bodyToMono(String.class));
+                .retrieve()
+                .bodyToMono(String.class);
     }
 
 
