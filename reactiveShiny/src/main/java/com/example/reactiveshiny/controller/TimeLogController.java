@@ -29,15 +29,13 @@ public class TimeLogController {
 
     @GetMapping("/hello-time")
     Mono<ResponseEntity<String>> helloWithTime() {
-
-        Mono<ResponseEntity<String>> response = webClient
+        return webClient
                 .get()
                 .uri("/hello-delay")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .toEntity(String.class);
-
-        return response;
+                .toEntity(String.class)
+                .map(this::mapResult);
     }
 
     ResponseEntity<String> mapResult(ResponseEntity<String> result) {
