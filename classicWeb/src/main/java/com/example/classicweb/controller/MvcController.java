@@ -34,6 +34,11 @@ public class MvcController {
         return ResponseEntity.badRequest().body("Something awful happened");
     }
 
+    @GetMapping("/error1")
+    public ResponseEntity<String> error1() {
+        return ResponseEntity.notFound().build();
+    }
+
     @GetMapping("/errorObject")
     public ResponseEntity<ErrorObject> errorObject() {
         return ResponseEntity.internalServerError().body(new ErrorObject("Something awful happened"));
