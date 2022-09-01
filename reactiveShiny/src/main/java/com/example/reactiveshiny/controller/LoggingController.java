@@ -26,13 +26,12 @@ public class LoggingController {
 
 
     @GetMapping("/log")
-    Mono<ResponseEntity<String>> helloWithLog() {
+    Mono<String> helloWithLog() {
         return webClient
                 .get()
                 .uri("/error")
                 .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .toEntity(String.class);
+                .exchangeToMono(response -> response.bodyToMono(String.class));
     }
 
 
