@@ -25,7 +25,7 @@ public class MvcController {
 
     @GetMapping("/hello-delay")
     public String helloDelay() throws InterruptedException {
-        Thread.sleep(new Random().nextInt(1000, 3000));
+        Thread.sleep(new Random().nextInt(500, 1000));
         return "Hello from old MVC with delay";
     }
 
