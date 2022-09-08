@@ -34,4 +34,15 @@ public class ErrorHandlingController {
     }
 
 
+
+    Mono<String> helloFallback() {
+        return webClient
+                .get()
+                .uri("/hello")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+
 }
