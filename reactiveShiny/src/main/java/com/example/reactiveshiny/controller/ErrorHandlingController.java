@@ -35,10 +35,10 @@ public class ErrorHandlingController {
 
 
 
-    Mono<String> helloFallback() {
+    Mono<String> fallback() {
         return webClient
                 .get()
-                .uri("/hello")
+                .uri("/fallback")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(String.class);

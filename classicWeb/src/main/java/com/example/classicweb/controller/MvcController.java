@@ -29,6 +29,11 @@ public class MvcController {
         return "Hello from old MVC with delay";
     }
 
+    @GetMapping("/fallback")
+    public String fallback() {
+        return "Fallback procedure happened";
+    }
+
     @GetMapping("/error")
     public ResponseEntity<String> error() {
         return ResponseEntity.badRequest().body("Something awful happened");
