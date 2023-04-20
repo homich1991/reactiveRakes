@@ -2,6 +2,7 @@ package com.example.reactiveshiny.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,14 @@ public class LoggingController {
                 .get()
                 .uri("/error")
                 .accept(MediaType.APPLICATION_JSON)
-                .exchangeToMono(response -> response.bodyToMono(String.class));
+                .exchangeToMono(response -> {
+                    if (response.statusCode() == HttpStatus.OK) {
+                        return response.bodyToMono(String.class);
+                    }
+                    return response.bodyToMono(String.class)
+                            .doOnNext(resp->log.error("Error happened {}", resp));
+
+                });
     }
 
 

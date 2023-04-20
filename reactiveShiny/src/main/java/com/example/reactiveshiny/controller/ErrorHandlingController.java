@@ -30,7 +30,13 @@ public class ErrorHandlingController {
                 .uri("/error")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(String.class)
+                .onErrorResume(error-> fallback()
+                        .doOnNext(log::info)
+                )
+
+
+                ;
     }
 
 
